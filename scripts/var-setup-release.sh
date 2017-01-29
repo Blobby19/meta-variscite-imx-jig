@@ -145,7 +145,7 @@ else
 fi
 
 # copy new EULA into community so setup uses latest i.MX EULA
-cp sources/meta-fsl-bsp-release/imx/EULA.txt sources/meta-variscite-imx/EULA
+cp sources/meta-fsl-bsp-release/imx/EULA.txt sources/meta-variscite-imx-jig/EULA
 if [ -d ./sources/meta-freescale ]; then
    cp sources/meta-fsl-bsp-release/imx/EULA.txt sources/meta-freescale/EULA
    cp sources/meta-fsl-bsp-release/imx/classes/fsl-eula-unpack.bbclass sources/meta-freescale/classes
@@ -192,7 +192,7 @@ if [ ! -e $BUILD_DIR/conf/bblayers.conf.org ]; then
 
     echo "BBLAYERS += \" \${BSPDIR}/sources/meta-qt5 \"" >> $BUILD_DIR/conf/bblayers.conf
 
-    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-variscite-imx \"" >> $BUILD_DIR/conf/bblayers.conf
+    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-variscite-imx-jig \"" >> $BUILD_DIR/conf/bblayers.conf
 
     echo BSPDIR=$BSPDIR
     echo BUILD_DIR=$BUILD_DIR

@@ -25,12 +25,7 @@ do_install_append() {
 		install -d ${D}${sysconfdir}/systemd/system/multi-user.target.wants
 		install -m 0644 ${WORKDIR}/variscite-bt.service ${D}${systemd_unitdir}/system
 		install -m 0755 ${WORKDIR}/variscite-bt ${D}${sysconfdir}/bluetooth
-
-		ln -sf ${systemd_unitdir}/system/variscite-bt.service \
-				${D}${sysconfdir}/systemd/system/multi-user.target.wants/variscite-bt.service
 	else
 		install -m 0755 ${WORKDIR}/variscite-bt ${D}${sysconfdir}/init.d
-		update-rc.d -r ${D} variscite-bt start 99 2 3 4 5 .
-		update-rc.d -r ${D} bluetooth defaults
 	fi
 }

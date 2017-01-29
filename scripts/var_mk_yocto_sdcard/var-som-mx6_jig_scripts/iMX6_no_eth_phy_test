@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [[ ${SOMTYPE} != "DART-MX6" ]]; then
+# VAR-SOM-MX6 || VAR-SOM-SOLO/DUAL
+
+	ifup eth0
+	if [[ `dmesg | grep -c 'eth0: no PHY'` != "0"  ]]; then
+		echo "PASS"
+		exit 0
+	else
+		echo "FAIL"
+		exit 1
+	fi
+fi
+
+echo "PASS"

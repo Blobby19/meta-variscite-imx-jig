@@ -1,0 +1,53 @@
+#!/bin/sh
+
+write_i2c_byte()
+{
+	i2cset -r -y $1 $2 $3 $4 > /dev/null
+	VAL=`i2cget -y $1 $2 $3`
+	if [ "$VAL" != "$4" ]; then
+		echo "FAIL! EEPROM VERIFY ADDRESS $3 SHOULD BE $4 READ $VAL"
+		exit 1
+	fi
+}
+
+for i in `seq 4 47`
+do
+	VAL=`i2cget -y 1 0x52 $i`
+	if [ "$VAL" != "0x00" ]; then
+		echo "Skipping write as EEPROM was already written"
+		echo "PASS"
+		exit 0
+	fi
+done
+
+ADDR=4
+A=`echo $1 | awk NF=NF FS=`
+for i in $A
+do
+	B=`printf '0x%x' "'$i"`
+	write_i2c_byte 1 0x52 $ADDR $B
+	let ADDR="$ADDR + 1"
+done
+write_i2c_byte 1 0x52 $ADDR 0x00
+
+let ADDR="20"
+A=`echo $2 | awk NF=NF FS=`
+for i in $A
+do
+	B=`printf '0x%x' "'$i"`
+	write_i2c_byte 1 0x52 $ADDR $B
+	let ADDR="$ADDR + 1"
+done
+write_i2c_byte 1 0x52 $ADDR 0x00
+
+let ADDR="36"
+A=`echo $3 | awk NF=NF FS=`
+for i in $A
+do
+	B=`printf '0x%x' "'$i"`
+	write_i2c_byte 1 0x52 $ADDR $B
+	let ADDR="$ADDR + 1"
+done
+write_i2c_byte 1 0x52 $ADDR 0x00
+
+echo "PASS"
