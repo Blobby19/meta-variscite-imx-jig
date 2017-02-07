@@ -37,10 +37,10 @@ if [[ $MACHINE == var-som-mx6 ]] ; then
 	P1_VOLNAME=BOOT-VARMX6
 	IS_SPL=true
 elif [[ $MACHINE == imx6ul-var-dart ]] ; then
-	P2_VOLNAME=BOOT-VAR6UL
+	P1_VOLNAME=BOOT-VAR6UL
 	IS_SPL=true
 elif [[ $MACHINE == imx7-var-som ]] ; then
-	P3_VOLNAME=BOOT-VARMX7
+	P1_VOLNAME=BOOT-VARMX7
 	IS_SPL=false
 else
 	help
