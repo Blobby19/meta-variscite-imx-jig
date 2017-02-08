@@ -6,13 +6,13 @@ $ cd ~/var-imx-yocto-krogoth-jig
 $ repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-4.1-krogoth
 $ repo sync -j8
 $ cd ~/var-imx-yocto-krogoth-jig/sources
-$ git clone https://github.com/varjig/meta-variscite-imx-jig.git
+$ git clone https://github.com/varjig/meta-variscite-imx-jig.git -b imx7-Krogoth-imx-4.1.15-var01
 $ cp meta-variscite-imx-jig/scripts/var-setup-release.sh ../
 
 $ cd ~/var-imx-yocto-krogoth-jig
-$ MACHINE=var-som-mx6 DISTRO=fsl-imx-fb source var-setup-release.sh -b build_fb
+$ MACHINE=imx7-var-som DISTRO=fsl-imx-fb source var-setup-release.sh -b build_fb
 $ bitbake core-image-base
 
 To create an SD Card from the images run:
 ========================================
-$ sudo MACHINE=var-som-mx6 ~/var-imx-yocto-krogoth-jig/sources/meta-variscite-imx-jig/scripts/var_mk_yocto_sdcard/jig-create-sdcard.sh /dev/sdX
+$ sudo MACHINE=imx7-var-som ~/var-imx-yocto-krogoth-jig/sources/meta-variscite-imx-jig/scripts/var_mk_yocto_sdcard/jig-create-sdcard.sh /dev/sdX
