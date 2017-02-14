@@ -147,6 +147,10 @@ else
 			SEARCH_EXP=1
 			FIRST_BOOTLOADER="elka/VSM-MX6-B30-EK1/u-boot_ELKA_TFTP_BOOT_2014_07_11.bin"
 			;;
+	VSM-DUAL-208-GB1 | VSM-DUAL-211-GB1)
+			FIRST_BOOTLOADER="grossenbacher/VSM-DUAL-208-GB1/SPL"
+			SECOND_BOOTLOADER="grossenbacher/VSM-DUAL-208-GB1/u-boot.img"
+			;;
 	*)
 			echo "FAIL: Invalid VSMTAG: $VSMTAG"
 			exit 1
