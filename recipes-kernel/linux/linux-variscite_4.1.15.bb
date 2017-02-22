@@ -7,7 +7,7 @@ require recipes-kernel/linux/linux-dtb.inc
 
 DEPENDS += "lzop-native bc-native"
 
-SRCBRANCH = "imx-rel_imx_4.1.15_2.0.0_ga-var01"
+SRCBRANCH = "mx6ul-imx_4.1.15_2.0.0_ga-var01"
 
 LOCALVERSION_var-som-mx6 = "-6QP-jig"
 LOCALVERSION_imx6ul-var-dart = "-6UL-jig"

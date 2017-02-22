@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ "$(dmesg | grep -c "scsi 0:0:0:0: Direct-Access     ATA      GLS")" -ne "1" ]; then
-        echo "FAIL: SATA device was not found!!!"
-        exit 1
-fi
-
-echo "PASS"

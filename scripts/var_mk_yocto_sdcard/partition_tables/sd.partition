@@ -1,0 +1,5 @@
+# partition table of /dev/sdb
+unit: sectors
+
+/dev/sdb1 : start=    15252, size=   45756, Id= b
+

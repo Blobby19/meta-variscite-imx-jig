@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ "$(lspci | grep -c "7952")" -ne "1" ]; then
-	echo "FAIL. PCIE device was not found!!! SOM Pins 100,102,128,130,134,136. CPU is not soldered well."
-	exit 1
-fi
-
-echo "PASS"
