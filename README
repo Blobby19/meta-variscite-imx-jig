@@ -10,9 +10,18 @@ $ git clone https://github.com/varjig/meta-variscite-imx-jig.git
 $ cp meta-variscite-imx-jig/scripts/var-setup-release.sh ../
 
 $ cd ~/var-imx-yocto-krogoth-jig
-$ MACHINE=var-som-mx6 DISTRO=fsl-imx-fb source var-setup-release.sh -b build_fb
-$ bitbake core-image-base
+$ MACHINE=imx6ul-var-dart DISTRO=fsl-imx-fb source var-setup-release.sh -b build_fb_ 
+$ bitbake core-image-minimal
+
+To rebuild the all the images after change
+========================================
+$ bitbake -c cleansstatus core-image-minimal
+$ bitbake core-image-minimal
 
 To create an SD Card from the images run:
 ========================================
-$ sudo MACHINE=var-som-mx6 ~/var-imx-yocto-krogoth-jig/sources/meta-variscite-imx-jig/scripts/var_mk_yocto_sdcard/jig-create-sdcard.sh /dev/sdX
+$ sudo ../sources/meta-variscite-imx-jig/scripts/var_mk_yocto_sdcard/jig-create-sdcard.sh /dev/sdg
+
+To create USB from the images run:
+========================================
+$ sudo ../sources/meta-variscite-imx-jig/scripts/var_mk_yocto_sdcard/jig-create-usb.sh /dev/sdh
