@@ -107,6 +107,9 @@ test_pattern()
 
                 if [ "$val" != "$1" ]; then
                         val=`read_rgb_pins`
+	                if [[ $SOMTYPE == "SOMSOLO" && $BT_NO_BUFF_YES == "YES" ]]; then
+        	                let val="$val & $((0xFFFFFEFF))"
+                	fi
                         if [ "$val" != "$1" ]; then
                                 EXIT_VAL=1
                                 quit "FAIL: Got $val instead $1"
