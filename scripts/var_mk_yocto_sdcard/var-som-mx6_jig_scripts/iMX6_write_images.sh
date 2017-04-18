@@ -14,8 +14,12 @@ function run_cmd
 	$@
 	local status=$?
 	if [ $status -ne 0 ]; then
-		echo "FAIL"
-		exit $status
+		if [ $1 = "kobs-ng" ] && [ $NAND_SIZE -eq 1024 ]; then
+			echo "WARNING: $1 has FAILED"
+		else
+			echo "FAIL!"
+			exit $status
+		fi
 	fi
 }
 
@@ -68,7 +72,7 @@ if [[ ! -z ${OS} ]]; then
 			run_cmd dd if=${HOME}/images/default/${UBOOT} of=/dev/mmcblk${EMMCBLK} bs=1K seek=69
 			sync
 		else
-			echo "FAIL: Variables are missing"
+			echo "FAIL! Variables are missing"
 			exit 1
 		fi
 
@@ -92,7 +96,7 @@ if [[ ! -z ${OS} ]]; then
 			run_cmd my_cmp /tmp/u-boot.img.tmp ~/images/default/${UBOOT}
 			rm -f /tmp/u-boot.img.tmp
 		else
-			echo "FAIL: Variables are missing"
+			echo "FAIL! Variables are missing"
 			exit 1
 		fi
 	fi
@@ -152,7 +156,7 @@ else
 			SECOND_BOOTLOADER="grossenbacher/VSM-DUAL-208-GB1/u-boot.img"
 			;;
 	*)
-			echo "FAIL: Invalid VSMTAG: $VSMTAG"
+			echo "FAIL! Invalid VSMTAG: $VSMTAG"
 			exit 1
 			;;
 	esac
