@@ -71,6 +71,12 @@ if [[ ! -z ${OS} ]]; then
 			sync
 			run_cmd dd if=${HOME}/images/default/${UBOOT} of=/dev/mmcblk${EMMCBLK} bs=1K seek=69
 			sync
+			sync; sleep 1; echo 3 > /proc/sys/vm/drop_caches
+			run_cmd dd if=/dev/mmcblk${EMMCBLK} of=/tmp/SPL.tmp bs=1K skip=1 count=$(expr `wc -c < ${HOME}/images/default/${SPL}` \/ 1024 + 1)
+			run_cmd dd if=/dev/mmcblk${EMMCBLK} of=/tmp/u-boot.img.tmp bs=1K skip=69 count=$(expr `wc -c < ${HOME}/images/default/${UBOOT}` \/ 1024 + 1)
+			run_cmd my_cmp /tmp/SPL.tmp ~/images/default/${SPL}
+			run_cmd my_cmp /tmp/u-boot.img.tmp ~/images/default/${UBOOT}
+			rm -f /tmp/SPL.tmp /tmp/u-boot.img.tmp
 		else
 			echo "FAIL! Variables are missing"
 			exit 1
@@ -92,7 +98,8 @@ if [[ ! -z ${OS} ]]; then
 			run_cmd kobs-ng init -x ~/images/default/${SPL} --search_exponent=${SEARCH_EXP} -v
 			run_cmd flash_erase /dev/mtd1 0 0
 			run_cmd nandwrite -p /dev/mtd1 ~/images/default/${UBOOT}
-			run_cmd nanddump -f /tmp/u-boot.img.tmp /dev/mtd1
+			sync; sleep 1; echo 3 > /proc/sys/vm/drop_caches
+			run_cmd nanddump -f /tmp/u-boot.img.tmp -l `wc -c < ~/images/default/${UBOOT}` /dev/mtd1
 			run_cmd my_cmp /tmp/u-boot.img.tmp ~/images/default/${UBOOT}
 			rm -f /tmp/u-boot.img.tmp
 		else
@@ -183,7 +190,8 @@ else
 		echo
 		echo "Writing ${SECOND_BOOTLOADER} to /dev/mtd1"
 		run_cmd nandwrite -p /dev/mtd1 ~/images/${SECOND_BOOTLOADER}
-		run_cmd nanddump -f /tmp/u-boot.img.tmp /dev/mtd1
+		sync; sleep 1; echo 3 > /proc/sys/vm/drop_caches
+		run_cmd nanddump -f /tmp/u-boot.img.tmp -l `wc -c < ~/images/${SECOND_BOOTLOADER}` /dev/mtd1
 		run_cmd my_cmp /tmp/u-boot.img.tmp ~/images/${SECOND_BOOTLOADER}
 		rm -f /tmp/u-boot.img.tmp
 	fi
@@ -192,7 +200,8 @@ else
 		echo
 		echo "Writing ${ENV_IMG} to /dev/mtd${ENV_PART_NUM} at offset ${ENV_ADDR}"
 		run_cmd nandwrite -p -s ${ENV_ADDR} /dev/mtd${ENV_PART_NUM} ~/images/${ENV_IMG}
-		run_cmd nanddump -s ${ENV_ADDR} -f /tmp/env.bin.tmp /dev/mtd${ENV_PART_NUM}
+		sync; sleep 1; echo 3 > /proc/sys/vm/drop_caches
+		run_cmd nanddump -s ${ENV_ADDR} -f /tmp/env.bin.tmp -l `wc -c < ~/images/${ENV_IMG}` /dev/mtd${ENV_PART_NUM}
 		run_cmd my_cmp /tmp/env.bin.tmp ~/images/${ENV_IMG}
 		rm -f /tmp/env.bin.tmp
 	fi
