@@ -216,6 +216,19 @@ else
 		bootpart=1
 		rootfspart=2
 
+		case $VSMTAG in
+			VSM-DT6-302-STG)
+				FIRST_BOOTLOADER="stages/VSM-DT6-302-STG/SPL.mmc"
+				SECOND_BOOTLOADER="stages/VSM-DT6-302-STG/u-boot.img.mmc"
+				EMMC_BOOT_PART_ARCHIVE="stages/VSM-DT6-302-STG/BOOT-VARSOM.tar.gz"
+				EMMC_ROOTFS_ARCHIVE="stages/VSM-DT6-302-STG/rootfs.tar.gz"
+				;;
+			*)
+				echo "FAIL! Invalid VSMTAG: $VSMTAG"
+				exit 1
+				;;
+		esac
+
 	else # BOOT_DEV == "NAND"
 		bootpart=none
 		rootfspart=1
