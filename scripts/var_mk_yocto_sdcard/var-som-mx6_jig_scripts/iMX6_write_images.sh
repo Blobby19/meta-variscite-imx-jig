@@ -11,10 +11,10 @@ function my_cmp
 function run_cmd
 {
 	echo "# $@"
-	$@
+	eval $@
 	local status=$?
 	if [ $status -ne 0 ]; then
-		if [ $1 = "kobs-ng" ] && [ $NAND_SIZE -eq 1024 ]; then
+		if [ "$1" = "kobs-ng" ] && [ $NAND_SIZE -eq 1024 ]; then
 			echo "WARNING: $1 has FAILED"
 		else
 			echo "FAIL!"
@@ -206,7 +206,7 @@ else
 		echo "Installing rootfs"
 		mkdir -p ${mountdir_prefix}${rootfspart}
 		run_cmd mount ${node}${part}${rootfspart} ${mountdir_prefix}${rootfspart}
-		run_cmd cat ~/images/${EMMC_ROOTFS_ARCHIVE}* | tar xzp -C ${mountdir_prefix}${rootfspart}
+		run_cmd "cat ~/images/${EMMC_ROOTFS_ARCHIVE}* | tar xzp -C ${mountdir_prefix}${rootfspart}"
 		sync
 		run_cmd umount ${node}${part}${rootfspart}
 	}
