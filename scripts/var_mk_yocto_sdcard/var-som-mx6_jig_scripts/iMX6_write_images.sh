@@ -283,6 +283,10 @@ else
 				FIRST_BOOTLOADER="grossenbacher/VSM-DUAL-208-GB1/SPL"
 				SECOND_BOOTLOADER="grossenbacher/VSM-DUAL-208-GB1/u-boot.img"
 				;;
+			VSM-SOLO-245-VM1)
+				FIRST_BOOTLOADER="vimar/VSM-SOLO-245-VM1/SPL"
+				SECOND_BOOTLOADER="vimar/VSM-SOLO-245-VM1/u-boot.img"
+				;;
 			*)
 				echo "FAIL! Invalid VSMTAG: $VSMTAG"
 				exit 1
