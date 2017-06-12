@@ -13,6 +13,7 @@ readonly YOCTO_IMGS_PATH=${YOCTO_BUILD}/tmp/deploy/images/${MACHINE}
 
 YOCTO_RECOVERY_ROOTFS_PATH=${YOCTO_IMGS_PATH}
 YOCTO_DEFAULT_IMAGE=core-image-base
+LOOP_MAJOR=7
 
 echo "==============================================="
 echo "= Variscite i.MX6 jig SD card creation script ="
@@ -28,18 +29,57 @@ function help
 	echo
 }
 
-if [[ $EUID -ne 0 ]] ; then
+function check_device
+{
+        # Check that parameter is a valid block device
+        if [ ! -b "$node" ]; then
+          echo "$node is not a valid block device, exiting"
+          exit 1
+        fi
+
+        local dev=$(basename $node)
+
+        # Check that /sys/block/${dev} exists
+        if [ ! -d /sys/block/${dev} ]; then
+          echo "Directory /sys/block/${dev} missing, exiting"
+          exit 1
+        fi
+
+        # Get device parameters
+        local removable=$(cat /sys/block/${dev}/removable)
+        local block_size=$(cat /sys/class/block/${dev}/queue/physical_block_size)
+        local size_bytes=$((${block_size}*$(cat /sys/class/block/${dev}/size)))
+        local size_gib=$(bc <<< "scale=1; ${size_bytes}/(1024*1024*1024)")
+
+        # Check that device is either removable or loop
+        if [ "$removable" != "1" -a $(stat -c '%t' ${node}) != ${LOOP_MAJOR} ]; then
+          echo "$node is neither removable nor loop device, exiting"
+          exit 1
+        fi
+
+        # Check that device is attached
+        if [ ${size_bytes} -eq 0 ]; then
+          echo "$node is not attached, exiting"
+          exit 1
+        fi
+
+        echo "Device: ${node}, ${size_gib}GiB"
+        echo "==============================================="
+        read -p "Press Enter to continue"
+}
+
+if [ $EUID -ne 0 ] ; then
 	echo "This script must be run with super-user privileges"
 	exit 1
 fi
 
-if [[ $MACHINE == var-som-mx6 ]] ; then
+if [ "$MACHINE" == "var-som-mx6" ] ; then
 	P1_VOLNAME=BOOT-VARMX6
 	IS_SPL=true
-elif [[ $MACHINE == imx6ul-var-dart ]] ; then
+elif [ "$MACHINE" == "imx6ul-var-dart" ] ; then
 	P1_VOLNAME=BOOT-VAR6UL
 	IS_SPL=true
-elif [[ $MACHINE == imx7-var-som ]] ; then
+elif [ "$MACHINE" == "imx7-var-som" ] ; then
 	P1_VOLNAME=BOOT-VARMX7
 	IS_SPL=false
 else
@@ -60,22 +100,10 @@ while [ "$moreoptions" = 1 -a $# -gt 0 ]; do
 	[ "$moreoptions" = 1 ] && shift
 done
 
-if [ ! -e ${node} ]; then
-	echo "Error: Wrong path to the block device!"
-	echo
-	help
-	exit 1
-fi
-
 part=""
 if [[ $node == *mmcblk* ]] || [[ $node == *loop* ]] ; then
 	part="p"
 fi
-
-echo "Device:  ${node}"
-echo "==============================================="
-read -p "Press Enter to continue"
-
 
 P2_VOLNAME=rootfs
 P3_VOLNAME=JIG_SCRIPTS
@@ -187,6 +215,7 @@ function copy_jig_scripts
 
 umount ${node}${part}*  2> /dev/null || true
 
+check_device
 delete_device
 create_parts
 format_parts
