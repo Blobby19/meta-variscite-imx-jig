@@ -232,6 +232,7 @@ else
 	else # BOOT_DEV == "NAND"
 		bootpart=none
 		rootfspart=1
+		KOBS_EXTRA_PARAMS="-x"
 
 		case $VSMTAG in
 			VSM-MX6-B06-TG1)
@@ -277,6 +278,7 @@ else
 				;;
 			VSM-MX6-B30-EK1)
 				SEARCH_EXP=1
+				KOBS_EXTRA_PARAMS=""
 				FIRST_BOOTLOADER="elka/VSM-MX6-B30-EK1/u-boot_ELKA_TFTP_BOOT_2014_07_11.bin"
 				;;
 			VSM-DUAL-208-GB1 | VSM-DUAL-211-GB1)
@@ -309,7 +311,7 @@ else
 
 		echo
 		echo "Writing ${FIRST_BOOTLOADER} to NAND flash (search_exponent=${SEARCH_EXP})"
-		run_cmd kobs-ng init -x ~/images/${FIRST_BOOTLOADER} --search_exponent=${SEARCH_EXP} -v
+		run_cmd kobs-ng init ${KOBS_EXTRA_PARAMS} ~/images/${FIRST_BOOTLOADER} --search_exponent=${SEARCH_EXP} -v
 
 		if [[ ! -z ${SECOND_BOOTLOADER} ]]; then
 			echo
