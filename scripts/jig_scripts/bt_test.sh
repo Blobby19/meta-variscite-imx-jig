@@ -1,6 +1,10 @@
 #! /bin/sh
 
-FIRMWARE=/lib/firmware/bcm/bcm43430a1.hcd
+if [ "$WBD" = "true" ]; then
+	FIRMWARE=/lib/firmware/bcm/bcm4339.hcd
+else
+	FIRMWARE=/lib/firmware/bcm/bcm43430a1.hcd
+fi
 
 echo 132 > /sys/class/gpio/export
 echo out > /sys/class/gpio/gpio132/direction
