@@ -289,6 +289,10 @@ else
 				FIRST_BOOTLOADER="vimar/VSM-SOLO-245-VM1/SPL"
 				SECOND_BOOTLOADER="vimar/VSM-SOLO-245-VM1/u-boot.img"
 				;;
+			VSM-DUAL-202-LS)
+				FIRST_BOOTLOADER="viriciti/VSM-DUAL-202-LS/SPL"
+				SECOND_BOOTLOADER="viriciti/VSM-DUAL-202-LS/u-boot.img"
+				;;
 			*)
 				echo "FAIL! Invalid VSMTAG: $VSMTAG"
 				exit 1
