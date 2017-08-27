@@ -109,6 +109,7 @@ test_pattern()
                         val=`read_rgb_pins`
 	                if [[ $SOMTYPE == "SOMSOLO" && $BT_NO_BUFF_YES == "YES" ]]; then
         	                let val="$val & $((0xFFFFFEFF))"
+	                        val=`printf "0x%06x" $val`
                 	fi
                         if [ "$val" != "$1" ]; then
                                 EXIT_VAL=1
