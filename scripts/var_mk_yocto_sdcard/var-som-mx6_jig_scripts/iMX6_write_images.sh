@@ -43,14 +43,22 @@ if [[ ! -z ${OS} ]]; then
 	DARTMX6_LINUX_SPL="SPL-sd-2013.10"
 	DARTMX6_LINUX_UBOOT="u-boot-sd-2013.10.img"
 
+	DARTMX6_2GB_RAM_LINUX_SPL="SPL-sd-2015.04"
+	DARTMX6_2GB_RAM_LINUX_UBOOT="u-boot-sd-2015.04.img"
+
 	DARTMX6_ANDROID_SPL="SPL-sd-2013.10"
 	DARTMX6_ANDROID_UBOOT="u-boot-android-sd-2014.04.img"
 
 	if [[ $BOOT_DEV == "EMMC" ]]; then
 		if [[ $OS == "LINUX" ]]; then
 			if [[ $SOMTYPE == "DART-MX6" ]]; then
-				SPL=${DARTMX6_LINUX_SPL}
-				UBOOT=${DARTMX6_LINUX_UBOOT}
+				if [[ $RAMSIZE == "2048" ]]; then
+					SPL=${DARTMX6_2GB_RAM_LINUX_SPL}
+					UBOOT=${DARTMX6_2GB_RAM_LINUX_UBOOT}
+				else
+					SPL=${DARTMX6_LINUX_SPL}
+					UBOOT=${DARTMX6_LINUX_UBOOT}
+				fi
 			else
 				SPL=${EMMC_LINUX_SPL}
 				UBOOT=${EMMC_LINUX_UBOOT}
