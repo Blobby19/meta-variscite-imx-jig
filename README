@@ -13,9 +13,10 @@ $ cd ~/var-imx-yocto-krogoth-jig
 $ MACHINE=imx6ul-var-dart DISTRO=fsl-imx-fb source var-setup-release.sh -b build_fb
 $ bitbake core-image-minimal
 
-To rebuild the all the images after change
+To rebuild the images after a change:
 ========================================
-$ bitbake -c cleansstatus core-image-minimal
+$ bitbake -c cleansstate linux-variscite u-boot-variscite u-boot-fw-utils wpa-supplicant-wl18xx
+$ bitbake -c cleanall core-image-minimal
 $ bitbake core-image-minimal
 
 To create an SD Card from the images run:
