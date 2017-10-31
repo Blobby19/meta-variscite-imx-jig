@@ -47,6 +47,30 @@ gpio_test_pair_bank()
 	gpio_test_pair_num $1 $2 $3 $4
 }
 
+# Setting GPIO1[6] high is requred for GPIO test to pass on VAR-SOM-MX7-5G.
+# Otherwise the following GPIO pairs will fail the test: GPIO4[15] -> GPIO4[6]
+# and GPIO6[20] -> GPIO4[4]. The reason is that GPIO4[4] and GPIO4[6] are BT RX
+# and RTS lines respectively, coming from BT buffer. For GPIO test to pass the
+# buffer should be closed using GPIO1[6].
+gpio_test_init()
+{
+	if [ "$WBD" = "true" -a ! -d /sys/class/gpio/gpio6 ]; then
+		echo 6  > /sys/class/gpio/export
+		echo out > /sys/class/gpio/gpio6/direction
+		echo 1   > /sys/class/gpio/gpio6/value
+	fi
+}
+
+# Setting GPIO1[6] low is requred for BT test to pass on VAR-SOM-MX7-5G.
+gpio_test_exit()
+{
+	if [ "$WBD" = "true" -a -d /sys/class/gpio/gpio6 ]; then
+		echo 0 > /sys/class/gpio/gpio6/value
+	fi
+}
+
+gpio_test_init
+
 gpio_test_pair_bank 2 1		3 26
 gpio_test_pair_bank 2 4		2 14
 gpio_test_pair_bank 2 9		3 28
@@ -106,8 +130,7 @@ gpio_test_pair_bank 6 19        4 5
 /unit_tests/memtool IOMUXC.SW_MUX_CTL_PAD_UART3_TX_DATA.MUX_MODE=0 &>/dev/null
 echo 1 > /sys/class/gpio/gpio14/value
 
-
-
+gpio_test_exit
 
 echo $STATUS
 
