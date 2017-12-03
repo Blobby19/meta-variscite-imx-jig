@@ -8,6 +8,32 @@ fail()
 	exit 1
 }
 
+pass()
+{
+	echo "PASS"
+	exit 0
+}
+
+check_sysfs_files()
+{
+	if [[ (! -f /sys/fsl_otp/HW_OCOTP_MAC0) || (! -f /sys/fsl_otp/HW_OCOTP_MAC1) ]]
+	then
+		fail 'No sysfs files'
+	fi
+}
+
+if [[ $VSMTAG == *-NOMAC* ]]
+then
+	echo "Verifying no MAC is written"
+	check_sysfs_files
+	if [[ (`cat /sys/fsl_otp/HW_OCOTP_MAC0` != 0x0) || (`cat /sys/fsl_otp/HW_OCOTP_MAC1` != 0x0) ]] || \
+	   [[ (-f /sys/fsl_otp/HW_OCOTP_MAC2) && (`cat /sys/fsl_otp/HW_OCOTP_MAC2` != 0x0) ]]
+	then
+		fail 'MAC is not zero'
+	fi
+	pass
+fi
+
 MAC_=$1
 MAC_="${MAC_^^}"
 
@@ -25,12 +51,7 @@ in
 	;;
 esac
 
-
-if [[ (! -f /sys/fsl_otp/HW_OCOTP_MAC0) || (! -f /sys/fsl_otp/HW_OCOTP_MAC1) ]]
-then
-	fail 'No sysfs files'
-fi
-
+check_sysfs_files
 
 if [[ -f /sys/fsl_otp/HW_OCOTP_MAC2 ]]
 then
@@ -71,4 +92,4 @@ do
 	fi
 done
 
-echo "PASS"
+pass
