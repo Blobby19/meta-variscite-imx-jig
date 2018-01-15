@@ -1,23 +1,17 @@
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
-memtester 10m | grep FAIL &
+#!/bin/sh
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: $0 test_duration_in_secs"
+	exit 1
+fi
+
+FREE_MEM=$(free -m | awk '/^Mem:/{print $4}')
+ITERS=$(expr $(expr $FREE_MEM - 30) / 15)
+
+for i in `seq 1 $ITERS`;
+do
+	memtester 15m | grep FAIL &
+done
 
 sleep $1
 
