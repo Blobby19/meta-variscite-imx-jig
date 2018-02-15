@@ -12,7 +12,7 @@ LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a
 
 PROVIDES += "u-boot"
 
-SRCBRANCH_var-som-mx6 = "imx_v2015.04_4.1.15_1.1.0_ga_var01"
+SRCBRANCH_var-som-mx6 = "imx_v2015.04_4.1.15_1.1.0_ga_var03"
 SRCBRANCH_imx6ul-var-dart = "imx_v2015.10_dart_6ul_var1"
 SRCBRANCH_imx7-var-som = "imx_v2015.04_4.1.15_1.1.0_ga_var02"
 UBOOT_SRC = "git://github.com/varjig/uboot-imx-jig.git;protocol=git"
