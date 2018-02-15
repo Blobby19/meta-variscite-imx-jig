@@ -31,6 +31,9 @@ if [[ ! -z ${OS} ]]; then
 	NAND_LINUX_SPL="SPL-nand-2013.10"
 	NAND_LINUX_UBOOT="u-boot-nand-2013.10.img"
 
+	MX6DQP_NAND_LINUX_SPL="SPL-nand-2017.03"
+	MX6DQP_NAND_LINUX_UBOOT="u-boot-nand-2017.03.img"
+
 	NAND_ANDROID_SPL="SPL-nand-2013.10"
 	NAND_ANDROID_UBOOT="u-boot-android-nand-2009.08.img"
 
@@ -92,8 +95,13 @@ if [[ ! -z ${OS} ]]; then
 
 	else # BOOT_DEV == "NAND"
 		if [[ $OS == "LINUX" ]]; then
-			SPL=${NAND_LINUX_SPL}
-			UBOOT=${NAND_LINUX_UBOOT}
+			if [[ $CPUTYPE == "MX6QP" ]]; then
+				SPL=${MX6DQP_NAND_LINUX_SPL}
+				UBOOT=${MX6DQP_NAND_LINUX_UBOOT}
+			else
+				SPL=${NAND_LINUX_SPL}
+				UBOOT=${NAND_LINUX_UBOOT}
+			fi
 		elif [[ $OS == "ANDROID" ]]; then
 			SPL=${NAND_ANDROID_SPL}
 			UBOOT=${NAND_ANDROID_UBOOT}
