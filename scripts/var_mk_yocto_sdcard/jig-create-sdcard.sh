@@ -35,13 +35,10 @@ fi
 
 if [[ $MACHINE == var-som-mx6 ]] ; then
 	P1_VOLNAME=BOOT-VARMX6
-	IS_SPL=true
 elif [[ $MACHINE == imx6ul-var-dart ]] ; then
 	P1_VOLNAME=BOOT-VAR6UL
-	IS_SPL=true
 elif [[ $MACHINE == imx7-var-som ]] ; then
 	P1_VOLNAME=BOOT-VARMX7
-	IS_SPL=false
 else
 	help
 	exit 1
@@ -135,12 +132,8 @@ function install_bootloader
 {
 	echo
 	echo "Installing U-Boot"
-	if [[ $IS_SPL == true ]] ; then
-		dd if=${YOCTO_IMGS_PATH}/SPL-sd of=${node} bs=1K seek=1; sync
-		dd if=${YOCTO_IMGS_PATH}/u-boot.img-sd of=${node} bs=1K seek=69; sync
-	else
-		dd if=${YOCTO_IMGS_PATH}/u-boot.imx-sd of=${node} bs=1K seek=1; sync
-	fi
+	dd if=${YOCTO_IMGS_PATH}/SPL-sd of=${node} bs=1K seek=1; sync
+	dd if=${YOCTO_IMGS_PATH}/u-boot.img-sd of=${node} bs=1K seek=69; sync
 }
 
 function mount_parts
