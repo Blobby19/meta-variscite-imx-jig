@@ -33,7 +33,7 @@ for i in 1 2 3 4 5; do
 
 	# Down BT device and unload BT firmware
 	[ ! -z "$HCIDEV" ] && hciconfig $HCIDEV down
-	killall -q brcm_patchram_plus
+	killall -PIPE -q brcm_patchram_plus
 
 	# Reset BT device
 	echo 0 > /sys/class/gpio/gpio14/value
@@ -45,7 +45,7 @@ for i in 1 2 3 4 5; do
 	brcm_patchram_plus --patchram ${FIRMWARE} \
 		--enable_hci --bd_addr 64:a3:cb:5b:69:f0 \
 		--no2bytes --baudrate 3000000 \
-		--tosleep 1000 /dev/ttymxc2 &
+		--tosleep 1000 /dev/ttymxc2 >/dev/null 2>&1 &
 
         sleep 10
 
@@ -67,7 +67,7 @@ done
 
 # Down BT device and unload BT firmware
 [ ! -z "$HCIDEV" ] && hciconfig $HCIDEV down
-killall -q brcm_patchram_plus
+killall -PIPE -q brcm_patchram_plus
 
 echo $STATUS
 
